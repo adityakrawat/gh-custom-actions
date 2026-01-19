@@ -71,4 +71,4 @@ jobs:
           - name: Checkout code
             uses: actions/checkout@v6
           - name: Run custom action
-            run:  ./.github/actions/deploy-s3-javascript
+            run:  ./.github/actions/deploy-s3-javascript/main.js
