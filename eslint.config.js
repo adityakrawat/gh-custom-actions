@@ -49,6 +49,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.vitest,
+        ...globals.node,
       },
     },
   },
