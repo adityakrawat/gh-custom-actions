@@ -51,6 +51,9 @@ jobs:
                 name: build-artifacts
                 path: dist
     deploy:
+        permissions: 
+          id-token: write
+          contents: read
         needs: build
         runs-on: ubuntu-latest
         steps:
@@ -63,15 +66,20 @@ jobs:
                 path: ./dist
             - name: Output contents
               run: ls
+            - name: Get AWS permissions
+              uses: aws-actions/configure-aws-credentials
+              with:
+                role-to-assume: arn:aws:iam::245162363529:role/GitHubDemo
+                aws-region: us-east-1
             - name: Deploy website
               id: deploy
               # uses: ./.github/actions/deploy-s3-javascript
               uses: ./.github/actions/deploy-s3-docker
-              env:
-                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              # env:
+              #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
               with:
-                bucket: aditya-gha-custom-action-hosting
+                bucket: gha-security-hosting-example1
                 dist-folder: ./dist
                 # bucket-region: us-east-1
             - name: Output website URL
